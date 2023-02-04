@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: service2-pod
+  labels:
+    service2: v1.0
+spec:
+  containers:
+  - name: service2
+    image: dmausa/service2:v1.0
+    ports:
+    - containerPort: 8092
