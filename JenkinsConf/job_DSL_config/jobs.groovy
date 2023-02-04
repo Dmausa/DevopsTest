@@ -2,45 +2,17 @@ pipelineJob("Master-pipeline") {
 	description()
 	keepDependencies(false)
 	parameters {
-		stringParam("service1Version", "v0.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
-		stringParam("service2Version", "v0.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
+		stringParam("service1Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
+		stringParam("service2Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
 	}
+    environmentVariables {
+        env(buildJobName,   "Docker-Build")
+        env(testJobName,    "Docker-Test")
+        env(uploadJobName,  "Docker-Upload")
+    }
 	definition {
-		cpsScm {
-            """timestamps {
-                def service1Tag
-                def service2Tag
-                stage('Build Docker Image-Service 1') {
-                
-                        def buildObj1 = build job: 'Docker-Build', parameters:      
-                                [[\$class:'StringParameterValue', name: 'version', value: service1Version],
-                                [\$class: 'StringParameterValue', name: 'serviceName', value: "Service1"]]
-                        service1Tag = buildObj1.getRawBuild().environment.get("SERVICE_TAG")
-                }
-                stage('Build Docker Image-Service 2') {
-                    
-                        def buildObj2 = build job: 'Docker-Build', parameters: 
-                                [[\$class: 'StringParameterValue', name: 'version', value: service2Version],
-                                [\$class: 'StringParameterValue', name: 'serviceName', value: "Service2"]]
-                        service2Tag = buildObj2.getRawBuild().environment.get("SERVICE_TAG")
-                }
-                stage('Run Unit Test-Service1') {
-                    
-                    def buildObj3 = build job: 'Docker-Test', parameters: 
-                        [[\$class: 'StringParameterValue', name: 'serviceTag', value: service1Tag]]
-                }
-                stage('Run Unit Test-Service2') {
-                    
-                    def buildObj3 = build job: 'Docker-Test', parameters: 
-                        [[\$class: 'StringParameterValue', name: 'serviceTag', value: service2Tag]]
-                }
-                stage('Publish to Docker Hub') {
-                    
-                    def buildObj3 = build job: 'Docker-Upload', parameters: 
-                        [[\$class: 'StringParameterValue', name: 'service1Tag', value: service1Tag],
-                        [\$class: 'StringParameterValue', name: 'service2Tag', value: service2Tag]]
-                }
-            }"""		
+		cps {
+            script(readFileFromWorkspace('JenkinsConf/master-pipeline.groovy'))	
         }
 	}
 	disabled(false)
