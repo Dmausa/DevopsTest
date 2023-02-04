@@ -6,9 +6,9 @@ pipelineJob("Master-pipeline") {
 		stringParam("service2Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
 	}
     environmentVariables {
-        env(buildJobName,   "Docker-Build")
-        env(testJobName,    "Docker-Test")
-        env(uploadJobName,  "Docker-Upload")
+        env("buildJobName",   "Docker-Build")
+        env("testJobName",    "Docker-Test")
+        env("uploadJobName",  "Docker-Upload")
     }
 	definition {
 		cps {
@@ -42,7 +42,8 @@ job('Docker-Build') {
                 echo SERVICE_TAG=$LOWERCASE_SERVICE_NAME:$version >> $WORKSPACE/prop.env
         ''')
         envInjectBuilder {
-            propertiesFilePath('$WORKSPACE/prop.env') 
+            propertiesFilePath('$WORKSPACE/prop.env')
+           	propertiesContent("") 
         }
     }
 }
