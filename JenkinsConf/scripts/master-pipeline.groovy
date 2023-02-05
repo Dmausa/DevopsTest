@@ -28,12 +28,12 @@ timestamps {
     }
     stage('Run Unit Test-Service2') {
         
-        def buildObj3 = build job: testJobName, parameters: 
+        def buildObj4 = build job: testJobName, parameters: 
             [[$class: 'StringParameterValue', name: 'serviceTag', value: service2Tag]]
     }
     stage('Publish to Docker Hub') {
         
-        def buildObj3 = build job: uploadJobName, parameters: 
+        def buildObj5 = build job: uploadJobName, parameters: 
             [[$class: 'StringParameterValue',  name: 'service1Tag', value: service1Tag],
             [$class: 'StringParameterValue',   name: 'service2Tag', value: service2Tag]]
     }
@@ -41,7 +41,7 @@ timestamps {
     stage('Deploy images') {
 
         if (deployServices){
-                def buildObj3 = build job: deployJobName, parameters: 
+                def buildObj6 = build job: deployJobName, propagate: false, parameters: 
                 [[$class: 'StringParameterValue',      name: 'version_service1',       value: service1Tag.substring( service1Tag.indexOf(":v") +1 )],
                 [$class: 'StringParameterValue',       name: 'version_service2',       value: service2Tag.substring( service2Tag.indexOf(":v") +1 )],
                 [$class: 'StringParameterValue',       name: 'additional_param_1',     value: additional_param_1]]
@@ -50,6 +50,3 @@ timestamps {
         }
     }
 }
-
-def startIndex = input.indexOf("v1.0")
-def result = input.substring(startIndex)
