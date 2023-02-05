@@ -9,4 +9,4 @@ spec:
   - name: service1
     image: dmausa/service1:v1.0
     ports:
-    - containerPort: 8091
+    - containerPort: 8080

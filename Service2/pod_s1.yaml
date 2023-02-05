@@ -9,4 +9,4 @@ spec:
   - name: service2
     image: dmausa/service2:v1.0
     ports:
-    - containerPort: 8092
+    - containerPort: 8081

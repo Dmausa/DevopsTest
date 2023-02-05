@@ -7,6 +7,6 @@ spec:
     service: v1.0
   ports:
     - name: service1-port
-      port: 802
+      port: 8081
       targetPort: 8080
   type: ClusterIP
