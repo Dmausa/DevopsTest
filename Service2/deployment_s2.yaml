@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2
+spec:
+  selector:
+    matchLabels:
+      service: v1.0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: v1.0
+    spec:
+      containers:
+        - image: dmausa/service2:v1.0
+          name: service2
+          env:
+          - name: ADDITIONAL_PARAM_1
+            value: "5"
+          ports:
+            - containerPort: 8081

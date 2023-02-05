@@ -1,6 +1,8 @@
-def buildJobName    = env.buildJobName
-def testJobName     = env.testJobName
-def uploadJobName   = env.uploadJobName
+def buildJobName        = env.buildJobName
+def testJobName         = env.testJobName
+def uploadJobName       = env.uploadJobName
+def deployJobName       = env.deployJobName
+def additional_param_1  = env.additional_param_1
 
 timestamps {
     def service1Tag
@@ -32,7 +34,22 @@ timestamps {
     stage('Publish to Docker Hub') {
         
         def buildObj3 = build job: uploadJobName, parameters: 
-            [[\$class: 'StringParameterValue', name: 'service1Tag', value: service1Tag],
-            [\$class: 'StringParameterValue', name: 'service2Tag', value: service2Tag]]
+            [[\$class: 'StringParameterValue',  name: 'service1Tag', value: service1Tag],
+            [\$class: 'StringParameterValue',   name: 'service2Tag', value: service2Tag]]
+    }
+
+    stage('Deploy images') {
+
+        if (deployServices){
+                def buildObj3 = build job: deployJobName, parameters: 
+                [[\$class: 'StringParameterValue',      name: 'version_service1',       value: service1Tag.substring( service1Tag.indexOf(":v") +1 )],
+                [\$class: 'StringParameterValue',       name: 'version_service2',       value: service2Tag.substring( service2Tag.indexOf(":v") +1 )],
+                [\$class: 'StringParameterValue',       name: 'additional_param_1',     value: additional_param_1]]
+        }else {
+                println "Deploy skipped"
+        }
     }
 }
+
+def startIndex = input.indexOf("v1.0")
+def result = input.substring(startIndex)

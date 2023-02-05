@@ -4,15 +4,17 @@ pipelineJob("Master-pipeline") {
 	parameters {
 		stringParam("service1Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
 		stringParam("service2Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
+        booleanParam('deployServices', false,  "Enable deploy step")
 	}
     environmentVariables {
         env("buildJobName",   "Docker-Build")
         env("testJobName",    "Docker-Test")
         env("uploadJobName",  "Docker-Upload")
+        env("deployJobName",  "Docker-Deploy")
     }
 	definition {
 		cps {
-            script(readFileFromWorkspace('JenkinsConf/master-pipeline.groovy'))	
+            script(readFileFromWorkspace('JenkinsConf/scripts/master-pipeline.groovy'))	
         }
 	}
 	disabled(false)
@@ -77,5 +79,16 @@ job('Docker-Upload') {
                 docker tag $service2Tag dmausa/$service2Tag
                 docker push dmausa/$service2Tag
         ''')
+    }
+}
+
+job('Docker-Deploy') {
+    parameters {
+        stringParam('version_service1',     'v1.0', 'ex. v1.0')
+        stringParam('version_service2',     'v1.0', 'ex. v1.0')
+        stringParam('additional_param_1',   '5',    '')
+    }
+    steps {
+        shell(readFileFromWorkspace('deploy.sh'))
     }
 }
