@@ -5,6 +5,7 @@ pipelineJob("Master-pipeline") {
 		stringParam("service1Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
 		stringParam("service2Version", "v1.0", "Defines Docker image tag, default is latest, for verisoning use vX.Y (v0.1)")
         booleanParam('deployServices', false,  "Enable deploy step")
+        stringParam("additional_param_1", "5", "Used only when deplyService is active.")
 	}
     environmentVariables {
         env("buildJobName",   "Docker-Build")
