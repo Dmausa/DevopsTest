@@ -15,14 +15,16 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-if [ "$(docker ps -q -f name=service1)" ]; then
-  echo "Found running container with name: $container_name, stopping..."
+if [ "$(docker ps -aq -f name=service1)" ]; then
+  echo "Found running container with name: service1, stopping..."
   docker stop service1
+  docker rm service1
 fi
 
-if [ "$(docker ps -q -f name=service2)" ]; then
-  echo "Found running container with name: $container_name, stopping..."
+if [ "$(docker ps -aq -f name=service2)" ]; then
+  echo "Found running container with name: service2, stopping..."
   docker stop service2
+  docker rm service2
 fi
 
 # Run the microservices using Docker, passing the additional_param_1 as an environment variable
