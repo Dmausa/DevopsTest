@@ -59,8 +59,8 @@ job('Docker-Test') {
         shell('''docker stop testService || true
                 docker rm -f "testService" || true
                 docker container ls --all
-                docker run -d -p 8081:8080 --name testService $serviceTag
-                nc -zv localhost 8081
+                docker run -d -p 8082:8080 --name testService $serviceTag
+                nc -zv localhost 8082
                 docker stop testService
         ''')
     }

@@ -16,5 +16,5 @@ while [ "$#" -gt 0 ]; do
 done
 
 # Run the microservices using Docker, passing the additional_param_1 as an environment variable
-docker run -d -p 8080:8080 -e ADDITIONAL_PARAM_1=$additional_param_1 --name=service1 service1:$version_service1
-docker run -d -p 8081:8080 -e ADDITIONAL_PARAM_1=$additional_param_1 --name=service2 service2:$version_service2
+docker run -d -p 8082:8080 -e ADDITIONAL_PARAM_1=$additional_param_1 --name=service1 dmausa/service1:$version_service1
+docker run -d -p 8081:8080 -e ADDITIONAL_PARAM_1=$additional_param_1 --name=service2 dmausa/service2:$version_service2
